@@ -77,8 +77,8 @@ public:
 	short          toShort        () const;
 protected:
 	// Helpers
-	template <class X> X convertToSignedPrimitive() const;
-	template <class X> X convertToPrimitive      () const;
+	template <class X> X convertToSignedPrimitive(X dummyX) const;
+	template <class X> X convertToPrimitive      (X dummyX) const;
 public:
 
 	// BIT/BLOCK ACCESSORS
@@ -237,7 +237,7 @@ public:
 
 	// See BigInteger.cc.
 	template <class X>
-	friend X convertBigUnsignedToPrimitiveAccess(const BigUnsigned &a);
+	friend X convertBigUnsignedToPrimitiveAccess(const BigUnsigned &a, X dummyX);
 };
 
 /* Implementing the return-by-value and assignment operators in terms of the
@@ -384,7 +384,7 @@ void BigUnsigned::initFromSignedPrimitive(X x) {
  * slower than the previous version with the masks, but it's much shorter and
  * clearer, which is the library's stated goal. */
 template <class X>
-X BigUnsigned::convertToPrimitive() const {
+X BigUnsigned::convertToPrimitive(X /*dummyX*/) const {
 	if (len == 0)
 		// The number is zero; return zero.
 		return 0;
@@ -406,8 +406,8 @@ X BigUnsigned::convertToPrimitive() const {
  * one.  (E.g., catch incorrect conversion of 2^31 to the long -2^31.)  Again,
  * separated to avoid a g++ warning. */
 template <class X>
-X BigUnsigned::convertToSignedPrimitive() const {
-	X x = convertToPrimitive<X>();
+X BigUnsigned::convertToSignedPrimitive(X dummyX) const {
+	X x = convertToPrimitive(dummyX);
 	if (x >= 0)
 		return x;
 	else

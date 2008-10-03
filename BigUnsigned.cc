@@ -12,12 +12,12 @@ BigUnsigned::BigUnsigned(         long  x) { initFromSignedPrimitive(x); }
 BigUnsigned::BigUnsigned(         int   x) { initFromSignedPrimitive(x); }
 BigUnsigned::BigUnsigned(         short x) { initFromSignedPrimitive(x); }
 
-unsigned long  BigUnsigned::toUnsignedLong () const { return convertToPrimitive      <unsigned long >(); }
-unsigned int   BigUnsigned::toUnsignedInt  () const { return convertToPrimitive      <unsigned int  >(); }
-unsigned short BigUnsigned::toUnsignedShort() const { return convertToPrimitive      <unsigned short>(); }
-long           BigUnsigned::toLong         () const { return convertToSignedPrimitive<         long >(); }
-int            BigUnsigned::toInt          () const { return convertToSignedPrimitive<         int  >(); }
-short          BigUnsigned::toShort        () const { return convertToSignedPrimitive<         short>(); }
+unsigned long  BigUnsigned::toUnsignedLong () const { return convertToPrimitive      ((unsigned long )0); }
+unsigned int   BigUnsigned::toUnsignedInt  () const { return convertToPrimitive      ((unsigned int  )0); }
+unsigned short BigUnsigned::toUnsignedShort() const { return convertToPrimitive      ((unsigned short)0); }
+long           BigUnsigned::toLong         () const { return convertToSignedPrimitive((         long )0); }
+int            BigUnsigned::toInt          () const { return convertToSignedPrimitive((         int  )0); }
+short          BigUnsigned::toShort        () const { return convertToSignedPrimitive((         short)0); }
 
 // BIT/BLOCK ACCESSORS
 

@@ -85,23 +85,23 @@ BigInteger::BigInteger(short x) : sign(signOf(x)), mag(magOf<short, unsigned sho
  * BigInteger::convertToUnsignedPrimitive to avoid requiring BigUnsigned to
  * declare BigInteger. */
 template <class X>
-inline X convertBigUnsignedToPrimitiveAccess(const BigUnsigned &a) {
-	return a.convertToPrimitive<X>();
+inline X convertBigUnsignedToPrimitiveAccess(const BigUnsigned &a, X dummyX) {
+	return a.convertToPrimitive(dummyX);
 }
 
 template <class X>
-X BigInteger::convertToUnsignedPrimitive() const {
+X BigInteger::convertToUnsignedPrimitive(X dummyX) const {
 	if (sign == negative)
 		throw "BigInteger::to<Primitive>: "
 			"Cannot convert a negative integer to an unsigned type";
 	else
-		return convertBigUnsignedToPrimitiveAccess<X>(mag);
+		return convertBigUnsignedToPrimitiveAccess(mag, dummyX);
 }
 
 /* Similar to BigUnsigned::convertToPrimitive, but split into two cases for
  * nonnegative and negative numbers. */
 template <class X, class UX>
-X BigInteger::convertToSignedPrimitive() const {
+X BigInteger::convertToSignedPrimitive(X /*dummyX*/, UX /*dummyUX*/) const {
 	if (sign == zero)
 		return 0;
 	else if (mag.getLength() == 1) {
@@ -124,12 +124,12 @@ X BigInteger::convertToSignedPrimitive() const {
 		"Value is too big to fit in the requested type";
 }
 
-unsigned long  BigInteger::toUnsignedLong () const { return convertToUnsignedPrimitive<unsigned long >       (); }
-unsigned int   BigInteger::toUnsignedInt  () const { return convertToUnsignedPrimitive<unsigned int  >       (); }
-unsigned short BigInteger::toUnsignedShort() const { return convertToUnsignedPrimitive<unsigned short>       (); }
-long           BigInteger::toLong         () const { return convertToSignedPrimitive  <long , unsigned long> (); }
-int            BigInteger::toInt          () const { return convertToSignedPrimitive  <int  , unsigned int>  (); }
-short          BigInteger::toShort        () const { return convertToSignedPrimitive  <short, unsigned short>(); }
+unsigned long  BigInteger::toUnsignedLong () const { return convertToUnsignedPrimitive((unsigned long )0)          ; }
+unsigned int   BigInteger::toUnsignedInt  () const { return convertToUnsignedPrimitive((unsigned int  )0)          ; }
+unsigned short BigInteger::toUnsignedShort() const { return convertToUnsignedPrimitive((unsigned short)0)          ; }
+long           BigInteger::toLong         () const { return convertToSignedPrimitive  ((long )0, (unsigned long )0); }
+int            BigInteger::toInt          () const { return convertToSignedPrimitive  ((int  )0, (unsigned int  )0); }
+short          BigInteger::toShort        () const { return convertToSignedPrimitive  ((short)0, (unsigned short)0); }
 
 // COMPARISON
 BigInteger::CmpRes BigInteger::compareTo(const BigInteger &x) const {
