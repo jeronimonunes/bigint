@@ -3,7 +3,15 @@ all:
 
 # Implicit rule to compile C++ files.  Modify to your taste.
 %.o: %.cc
-	g++ -c -O2 -Wall -Wextra -pedantic $<
+	$(CXX) $(CXXFLAGS) -c $<
+
+ifdef OS
+   RM = del /Q
+else
+   ifeq ($(shell uname), Linux)
+      RM = rm -f
+   endif
+endif
 
 # Components of the library.
 library-objects = \
@@ -31,7 +39,7 @@ $(library-objects): $(library-headers)
 # Compiling the testsuite.
 testsuite.o: $(library-headers)
 testsuite: testsuite.o $(library-objects)
-	g++ $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@
 # Extract the expected output from the testsuite source.
 testsuite.expected: testsuite.cc
 	nl -ba -p -s: $< | sed -nre 's,^ +([0-9]+):.*//([^ ]),Line \1: \2,p' >$@
@@ -58,11 +66,11 @@ $(program-objects) : $(library-headers)
 
 # How to link the program.  The implicit rule covers individual objects.
 $(program) : $(program-objects) $(library-objects)
-	g++ $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Delete all generated files we know about.
 clean :
-	rm -f $(library-objects) $(testsuite-cleanfiles) $(program-objects) $(program)
+	$(RM) $(clean_command) $(library-objects) $(testsuite-cleanfiles) $(program-objects) $(program)
 
 # I removed the *.tag dependency tracking system because it had few advantages
 # over manually entering all the dependencies.  If there were a portable,
