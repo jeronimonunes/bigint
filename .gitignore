@@ -6,3 +6,4 @@ testsuite.out
 testsuite.err
 sample.ilk
 sample.pdb
+sample.wasm
